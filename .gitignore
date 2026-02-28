@@ -5,3 +5,5 @@ dist/
 *.log
 prisma/*.db
 prisma/*.db-journal
+migrations/
+.vercel
