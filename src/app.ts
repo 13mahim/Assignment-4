@@ -1,6 +1,8 @@
+import "dotenv/config"; 
+import "dotenv/config";
 import express from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+
 import authRoutes from './routes/authRoutes';
 import tutorRoutes from './routes/tutorRoutes';
 import bookingRoutes from './routes/bookingRoutes';
@@ -9,7 +11,6 @@ import adminRoutes from './routes/adminRoutes';
 import categoryRoutes from './routes/categoryRoutes';
 import { errorHandler } from './middleware/errorHandler';
 
-dotenv.config();
 
 const app = express();
 
@@ -27,6 +28,22 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/categories', categoryRoutes);
 
+app.get('/api', (req, res) => {
+  res.json({ 
+    message: 'Welcome to SkillBridge API',
+    version: '1.0.0',
+    endpoints: {
+      health: '/api/health',
+      auth: '/api/auth',
+      tutors: '/api/tutors',
+      bookings: '/api/bookings',
+      reviews: '/api/reviews',
+      admin: '/api/admin',
+      categories: '/api/categories'
+    }
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ 
     status: 'OK', 
@@ -40,13 +57,5 @@ app.use('*', (req, res) => {
 });
 
 app.use(errorHandler);
-
-const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📝 Environment: ${process.env.NODE_ENV}`);
-  console.log(`🔗 API URL: http://localhost:${PORT}/api`);
-});
 
 export default app;

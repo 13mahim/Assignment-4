@@ -1,9 +1,7 @@
 import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma';
 import { AuthRequest } from '../middleware/auth';
 import { HTTP_STATUS } from '../utils/constants';
-
-const prisma = new PrismaClient();
 
 export const getAllUsers = async (req: AuthRequest, res: Response) => {
   try {

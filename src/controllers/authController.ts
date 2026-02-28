@@ -1,11 +1,9 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../lib/prisma'; // ✅ THIS MUST BE ACTIVE
 import { AuthRequest } from '../middleware/auth';
 import { ERROR_MESSAGES, HTTP_STATUS } from '../utils/constants';
-
-const prisma = new PrismaClient();
 
 export const register = async (req: Request, res: Response) => {
   try {

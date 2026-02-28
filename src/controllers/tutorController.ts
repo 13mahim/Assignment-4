@@ -1,9 +1,7 @@
-import { Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
-import { AuthRequest } from '../middleware/auth';
-import { HTTP_STATUS } from '../utils/constants';
-
-const prisma = new PrismaClient();
+import { Request, Response } from 'express'
+import prisma from '../lib/prisma'
+import { AuthRequest } from '../middleware/auth'
+import { HTTP_STATUS } from '../utils/constants'
 
 export const getTutors = async (req: Request, res: Response) => {
   try {
@@ -11,12 +9,13 @@ export const getTutors = async (req: Request, res: Response) => {
       include: {
         user: { select: { id: true, name: true, email: true } }
       }
-    });
-    res.json(tutors);
+    })
+
+    res.json(tutors)
   } catch (error) {
-    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to fetch tutors' });
+    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to fetch tutors' })
   }
-};
+}
 
 export const getTutorById = async (req: Request, res: Response) => {
   try {
@@ -26,29 +25,31 @@ export const getTutorById = async (req: Request, res: Response) => {
         user: { select: { id: true, name: true, email: true } },
         availability: true
       }
-    });
-    res.json(tutor);
+    })
+
+    res.json(tutor)
   } catch (error) {
-    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to fetch tutor' });
+    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to fetch tutor' })
   }
-};
+}
 
 export const updateTutorProfile = async (req: AuthRequest, res: Response) => {
   try {
     const tutor = await prisma.tutorProfile.update({
       where: { userId: req.user?.id },
       data: req.body
-    });
-    res.json({ message: 'Profile updated', tutor });
+    })
+
+    res.json({ message: 'Profile updated', tutor })
   } catch (error) {
-    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to update profile' });
+    res.status(HTTP_STATUS.INTERNAL_SERVER).json({ error: 'Failed to update profile' })
   }
-};
+}
 
 export const updateAvailability = async (req: AuthRequest, res: Response) => {
-  res.json({ message: 'Availability updated' });
-};
+  res.json({ message: 'Availability updated' })
+}
 
 export const getTutorAvailability = async (req: Request, res: Response) => {
-  res.json({});
-};
+  res.json({})
+}
