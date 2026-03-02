@@ -14,7 +14,14 @@ import { errorHandler } from './middleware/errorHandler';
 
 const app = express();
 
-// Root route for Vercel
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+  credentials: true
+}));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Root route
 app.get('/', (req, res) => {
   res.json({ 
     message: 'Welcome to SkillBridge API',
@@ -30,13 +37,6 @@ app.get('/', (req, res) => {
     }
   });
 });
-
-app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:3000',
-  credentials: true
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 
 app.use('/api/auth', authRoutes);
 app.use('/api/tutors', tutorRoutes);
